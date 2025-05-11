@@ -2,7 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Random Saxophone Jazz Playlist for Studying</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Random Saxophone Jazz Playlist</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #player {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
       // Curated list of long saxophone jazz playlists for studying
@@ -14,30 +27,26 @@
 
       var player;
 
-      // This function is called automatically when the YouTube IFrame API is ready
+      // This function is called automatically when the YouTube IFrame API is ready.
       function onYouTubeIframeAPIReady() {
         loadRandomPlaylist();
       }
 
-      // Load a random playlist from the array
+      // Loads a random playlist from the array.
       function loadRandomPlaylist() {
         var randomIndex = Math.floor(Math.random() * saxJazzPlaylists.length);
         var videoId = saxJazzPlaylists[randomIndex];
 
         if (player) {
-          // If the player already exists, load the newly selected video.
           player.loadVideoById(videoId);
         } else {
-          // Otherwise, create a new player instance.
           player = new YT.Player('player', {
-            height: '390',
-            width: '640',
             videoId: videoId,
             playerVars: {
-              autoplay: 1,
+              autoplay: 0,       // Disable autoplay
               controls: 1,
-              rel: 0,              // Disable related videos at the end
-              modestbranding: 1    // Minimal YouTube branding
+              rel: 0,            // Disable related videos
+              modestbranding: 1  // Minimal YouTube branding
             },
             events: {
               'onReady': onPlayerReady,
@@ -47,22 +56,20 @@
         }
       }
 
-      // Begin playing the video once it is ready.
+      // When the video is ready, do nothing automatically,
+      // allowing the user to start the video manually.
       function onPlayerReady(event) {
-        event.target.playVideo();
+        // No auto-play: user can click the play button.
       }
 
-      // If an error occurs (such as the video being unavailable), try loading another video.
+      // If an error occurs, log it and try loading another playlist.
       function onPlayerError(event) {
-        console.log('Error occurred: ' + event.data);
-        console.log('Attempting to load a different playlist...');
+        console.log("Error occurred: " + event.data);
         loadRandomPlaylist();
       }
     </script>
   </head>
   <body>
-    <div style="width: 100%; height: 100%; overflow: hidden;">
-      <div id="player" style="width: 100%; height: 100%;"></div>
-    </div>
+    <div id="player"></div>
   </body>
 </html>
