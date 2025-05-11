@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Random Saxophone Jazz Playlist for Studying</title>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      // Curated list of long saxophone jazz playlists for studying
+      var saxJazzPlaylists = [
+        '2dSgVXqZ4xk',  // Relaxing Jazz Saxophone Music for Studying, Sleep, Reading 10 Hours
+        's7ANBsnvoy4',  // Smooth Saxophone Jazz for Deep Focus | Best Instrumental Playlist for Studying
+        'K7RmhU4m2no'   // Straight Up Smooth Jazz • 2 Hours Smooth Jazz Saxophone Instrumental Music for Relaxing and Study
+      ];
+
+      var player;
+
+      // This function is called automatically when the YouTube IFrame API is ready
+      function onYouTubeIframeAPIReady() {
+        loadRandomPlaylist();
+      }
+
+      // Load a random playlist from the array
+      function loadRandomPlaylist() {
+        var randomIndex = Math.floor(Math.random() * saxJazzPlaylists.length);
+        var videoId = saxJazzPlaylists[randomIndex];
+
+        if (player) {
+          // If the player already exists, load the newly selected video.
+          player.loadVideoById(videoId);
+        } else {
+          // Otherwise, create a new player instance.
+          player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: videoId,
+            playerVars: {
+              autoplay: 1,
+              controls: 1,
+              rel: 0,              // Disable related videos at the end
+              modestbranding: 1    // Minimal YouTube branding
+            },
+            events: {
+              'onReady': onPlayerReady,
+              'onError': onPlayerError
+            }
+          });
+        }
+      }
+
+      // Begin playing the video once it is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // If an error occurs (such as the video being unavailable), try loading another video.
+      function onPlayerError(event) {
+        console.log('Error occurred: ' + event.data);
+        console.log('Attempting to load a different playlist...');
+        loadRandomPlaylist();
+      }
+    </script>
+  </head>
+  <body>
+    <div id="player"></div>
+  </body>
+</html>
